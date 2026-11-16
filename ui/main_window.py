@@ -80,7 +80,7 @@ from ui.workbench_models import (
 class MainWindow(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
-        self.setWindowTitle("Remote File Manager")
+        self.setWindowTitle("NOBAD File Bridge")
         self.app_data = AppDataService.create()
         self.saved_connections = SavedConnectionService(self.app_data.session_factory, self.app_data.credential_store)
         self.credential_vault = CredentialVaultService(self.app_data.session_factory)
@@ -1499,8 +1499,8 @@ class MainWindow(QMainWindow):
     def _show_about(self) -> None:
         QMessageBox.about(
             self,
-            "About Remote File Manager",
-            "Remote File Manager\n\nSSH/SFTP and FTP/FTPS workbench with files, cross-server transfers, editor, terminal, sync, deployments, and logs.",
+            "About NOBAD File Bridge",
+            "NOBAD File Bridge\n\nSSH/SFTP and FTP/FTPS workbench with files, cross-server transfers, editor, terminal, sync, deployments, and logs.",
         )
 
     def _show_diagnostics_folder(self) -> None:

@@ -102,7 +102,7 @@ def test_top_bar_branding_uses_icon_and_full_name() -> None:
 
     assert "logo.setFixedSize(26, 26)" in source
     assert "logo.setPixmap(application_icon().pixmap(24, 24))" in source
-    assert 'title = QLabel("Remote File Manager")' in source
+    assert 'title = QLabel("NOBAD File Bridge")' in source
 
 
 def test_native_menu_and_diagnostics_are_installed() -> None:

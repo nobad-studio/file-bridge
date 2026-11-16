@@ -13,7 +13,7 @@ def test_app_main_sets_qt_application_icon() -> None:
     source = Path("app/main.py").read_text(encoding="utf-8")
 
     assert "icon = application_icon()" in source
-    assert 'app.setDesktopFileName("remote-file-manager")' in source
+    assert 'app.setDesktopFileName("nobad-file-bridge")' in source
     assert "app.setWindowIcon(icon)" in source
     assert "window.setWindowIcon(icon)" in source
 
@@ -33,11 +33,11 @@ def test_pyinstaller_spec_includes_resources_and_app_icon() -> None:
 
 
 def test_linux_deb_packaging_metadata_uses_launcher_icon() -> None:
-    desktop = Path("packaging/linux/remote-file-manager.desktop").read_text(encoding="utf-8")
+    desktop = Path("packaging/linux/nobad-file-bridge.desktop").read_text(encoding="utf-8")
     build_script = Path("packaging/linux/build-deb.sh").read_text(encoding="utf-8")
 
-    assert "Icon=remote-file-manager" in desktop
-    assert "Exec=remote-file-manager" in desktop
+    assert "Icon=nobad-file-bridge" in desktop
+    assert "Exec=nobad-file-bridge" in desktop
     assert 'BIN_DIR="${PACKAGE_ROOT}/usr/bin"' in build_script
     assert "QT_QPA_PLATFORM" in build_script
     assert "QTWEBENGINE_CHROMIUM_FLAGS" in build_script

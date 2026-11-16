@@ -140,7 +140,7 @@ class HealthCheckService:
             request = (
                 f"GET {path} HTTP/1.1\r\n"
                 f"Host: {parsed.hostname}\r\n"
-                "User-Agent: RemoteFileManager/Phase3G\r\n"
+                "User-Agent: NOBADFileBridge/0.4\r\n"
                 "Accept: */*\r\n"
                 "Connection: close\r\n\r\n"
             )

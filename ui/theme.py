@@ -6,7 +6,7 @@ from PySide6.QtGui import QFont
 
 @dataclass(frozen=True, slots=True)
 class ThemeTokens:
-    """Raycast / Linear-inspired design tokens for Remote File Manager."""
+    """Raycast / Linear-inspired design tokens for NOBAD File Bridge."""
     canvas: str = "#09090b"          # Window base background
     surface: str = "#111114"         # Panels, sidebars, headers
     surface_card: str = "#141418"    # Elevated items, table rows, inputs

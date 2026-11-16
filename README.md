@@ -1,9 +1,10 @@
-# NOBAD Files (Remote File Manager)
+# NOBAD File Bridge
 
-A cross-platform desktop file manager for remote servers, part of the NOBAD platform. It's built with Python 3.12
+Open, copy, edit and back up the files on your website or server, right from your PC. NOBAD File Bridge
+(formerly *NOBAD File Bridge*) is a cross-platform desktop app and part of the NOBAD platform. It's built with Python 3.12
 and PySide6.
 
-All commands below are run from `apps/files/`.
+All commands below are run from `apps/file-bridge/`.
 
 Phase 4A/4B/4C MVP for a cross-platform Python desktop application: a PySide6 file manager with SSH/SFTP and FTP/FTPS browsing, queued transfers, cross-server relay, baseline-aware sync, visual text diffs, remote editing, terminals, structured logs, secure credential references, password-protected credential vaults, and release-aware deployment workflows.
 
@@ -96,28 +97,28 @@ Build the PyInstaller app folder:
 
 ```bash
 pyinstaller --clean --noconfirm build.spec
-./dist/RemoteFileManager/RemoteFileManager
+./dist/NobadFileBridge/NobadFileBridge
 ```
 
 Build a basic Linux `.deb` from that app folder:
 
 ```bash
 packaging/linux/build-deb.sh 0.4.0 amd64
-sudo apt install ./dist/remote-file-manager_0.4.0_amd64.deb
-remote-file-manager
+sudo apt install ./dist/nobad-file-bridge_0.4.0_amd64.deb
+nobad-file-bridge
 ```
 
 If apt prints `Download is performed unsandboxed as root ... couldn't be accessed by user '_apt'`, the package can still install successfully. It means the local `.deb` lives in a directory the `_apt` sandbox user cannot traverse. To avoid that notice, copy the package to `/tmp` first:
 
 ```bash
-cp ./dist/remote-file-manager_0.4.0_amd64.deb /tmp/
-sudo apt install /tmp/remote-file-manager_0.4.0_amd64.deb
+cp ./dist/nobad-file-bridge_0.4.0_amd64.deb /tmp/
+sudo apt install /tmp/nobad-file-bridge_0.4.0_amd64.deb
 ```
 
-The Linux package installs a launcher at `/usr/bin/remote-file-manager`. If the app aborts on another PC, run it once with Qt plugin diagnostics:
+The Linux package installs a launcher at `/usr/bin/nobad-file-bridge`. If the app aborts on another PC, run it once with Qt plugin diagnostics:
 
 ```bash
-QT_DEBUG_PLUGINS=1 remote-file-manager 2>&1 | tee /tmp/remote-file-manager-startup.log
+QT_DEBUG_PLUGINS=1 nobad-file-bridge 2>&1 | tee /tmp/nobad-file-bridge-startup.log
 ```
 
 The `.deb` declares common PySide6/QtWebEngine runtime dependencies, including XCB, WebEngine, GL, GTK, NSS, and audio libraries. Rebuild the `.deb` after changing `packaging/linux/build-deb.sh`; the old `.deb` will not contain new dependency metadata.
@@ -130,7 +131,7 @@ py -3.12 -m venv .venv
 python -m pip install -e ".[dev]"
 python -m pip install pyinstaller
 pyinstaller --clean --noconfirm build.spec
-.\dist\RemoteFileManager\RemoteFileManager.exe
+.\dist\NobadFileBridge\NobadFileBridge.exe
 ```
 
-The spec includes the bundled terminal assets, branding images, credential-vault modules, FTP/FTPS, sync, deployment, terminal, and `resources/branding/remote-file-manager.ico` for the executable icon. Ignore Inno Setup for now; the Windows output is the app folder plus `.exe` under `dist\RemoteFileManager`.
+The spec includes the bundled terminal assets, branding images, credential-vault modules, FTP/FTPS, sync, deployment, terminal, and `resources/branding/remote-file-manager.ico` for the executable icon. Ignore Inno Setup for now; the Windows output is the app folder plus `.exe` under `dist\NobadFileBridge`.

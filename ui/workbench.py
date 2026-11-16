@@ -132,7 +132,7 @@ class ConnectionStatusBar(QFrame):
         logo.setPixmap(application_icon().pixmap(24, 24))
         logo.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        title = QLabel("Remote File Manager")
+        title = QLabel("NOBAD File Bridge")
         title.setStyleSheet("font-size: 13px; font-weight: 600; color: #f4f4f5; background: transparent; border: none;")
         brand_box.addWidget(logo)
         brand_box.addWidget(title)
@@ -590,7 +590,7 @@ class ConnectionCommandBar(QFrame):
         self.setObjectName("ConnectionCommandBar")
         self._state = ConnectionCommandState()
         self._profiles: list[object] = []
-        self.title = QLabel("Remote File Manager")
+        self.title = QLabel("NOBAD File Bridge")
         self.title.setObjectName("PageTitle")
         self.status_badge = StatusBadge("Ready")
         self.detail = QLabel("No server connected")

@@ -1,5 +1,5 @@
 [project]
-name = "remote-file-manager"
+name = "nobad-file-bridge"
 version = "0.4.0"
 description = "PySide6 SSH/SFTP and FTP/FTPS remote file manager with sync and deployment workflows."
 readme = "README.md"
@@ -27,7 +27,7 @@ future = [
 ]
 
 [project.scripts]
-remote-file-manager = "app.main:main"
+nobad-file-bridge = "app.main:main"
 
 [build-system]
 requires = ["setuptools>=69", "wheel"]
