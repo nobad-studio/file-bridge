@@ -998,7 +998,7 @@ class NewUnitModalDialog(QDialog):
         cmd = self.exec_input.text().strip()
 
         content = (
-            f"[Unit]\nDescription={name} managed by Remote File Manager\nAfter=network.target\n\n"
+            f"[Unit]\nDescription={name} managed by NOBAD File Bridge\nAfter=network.target\n\n"
             f"[Service]\nType=simple\nUser={user}\nWorkingDirectory={wd}\n"
             f"ExecStart={cmd}\nRestart=always\nRestartSec=3\n\n"
             f"[Install]\nWantedBy=multi-user.target\n"

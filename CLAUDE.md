@@ -1,3 +1,3 @@
-# Claude Code: NOBAD Files
+# Claude Code: NOBAD File Bridge
 
 @AGENTS.md

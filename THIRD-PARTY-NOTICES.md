@@ -1,4 +1,4 @@
-# Third-party notices: NOBAD Files
+# Third-party notices: NOBAD File Bridge
 
 Bundled in this folder:
 

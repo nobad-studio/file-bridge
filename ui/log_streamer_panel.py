@@ -53,7 +53,7 @@ class LogStreamerNoConnectionDialog(QDialog):
     def __init__(self, action_name: str = "Live Log Streaming", parent: QWidget | None = None) -> None:
         super().__init__(parent)
         self.setObjectName("LogStreamerNoConnectionDialog")
-        self.setWindowTitle("Server Not Connected — Remote File Manager")
+        self.setWindowTitle("Server Not Connected — NOBAD File Bridge")
         self.setWindowFlags(
             Qt.WindowType.Dialog
             | Qt.WindowType.CustomizeWindowHint
@@ -184,7 +184,7 @@ class NewLogStreamDialog(QDialog):
 
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
-        self.setWindowTitle("Attach New Live Log Stream — Remote File Manager")
+        self.setWindowTitle("Attach New Live Log Stream — NOBAD File Bridge")
         self.setWindowFlags(
             Qt.WindowType.Dialog
             | Qt.WindowType.CustomizeWindowHint

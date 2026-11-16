@@ -1,5 +1,5 @@
 # -*- mode: python ; coding: utf-8 -*-
-# PyInstaller spec file for Remote File Manager.
+# PyInstaller spec file for NOBAD File Bridge.
 #
 # Build with:
 #   uv run --with pyinstaller pyinstaller --clean --noconfirm build.spec
@@ -7,13 +7,13 @@
 #   pyinstaller --clean --noconfirm build.spec
 #
 # Output:
-#   dist/RemoteFileManager/RemoteFileManager
+#   dist/NobadFileBridge/NobadFileBridge
 #
 # Create Debian (.deb) package with:
 #   ./packaging/linux/build-deb.sh
 #
 # Windows output:
-#   dist/RemoteFileManager/RemoteFileManager.exe
+#   dist/NobadFileBridge/NobadFileBridge.exe
 
 from __future__ import annotations
 
@@ -23,7 +23,7 @@ from PyInstaller.utils.hooks import collect_submodules, copy_metadata
 
 
 ROOT = Path(globals().get("SPECPATH", ".")).resolve()
-APP_NAME = "RemoteFileManager"
+APP_NAME = "NobadFileBridge"
 RESOURCES_DIR = ROOT / "resources"
 APP_ICON = RESOURCES_DIR / "branding" / "remote-file-manager.ico"
 

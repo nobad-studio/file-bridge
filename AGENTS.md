@@ -1,18 +1,18 @@
-# NOBAD Files: instructions for AI coding assistants
+# NOBAD File Bridge: instructions for AI coding assistants
 
-This file applies to everything under `apps/files/`. The repository-wide rules are in [`/AGENTS.md`](../../AGENTS.md)
+This file applies to everything under `apps/file-bridge/`. The repository-wide rules are in [`/AGENTS.md`](../../AGENTS.md)
 (read it too); project memory is in [`/docs/ai/memory.md`](../../docs/ai/memory.md).
 
-NOBAD Files is a desktop file manager for remote servers (SSH/SFTP, FTP/FTPS, transfers, sync, remote editing,
+NOBAD File Bridge is a desktop file manager for remote servers (SSH/SFTP, FTP/FTPS, transfers, sync, remote editing,
 terminals, an encrypted credential vault, deployments). Python 3.12 + PySide6. Author and code owner:
 @harshRaj1601. Part of NOBAD: *software with a point of view*.
 
-## Commands (from `apps/files`)
+## Commands (from `apps/file-bridge`)
 - Install: `pip install -e ".[dev]"` (CI should move to `uv sync --locked`, see #33)
-- Tests: `python -m pytest -q tests` (Qt offscreen: `QT_QPA_PLATFORM=offscreen`). CI: `.github/workflows/files-ci.yml`.
+- Tests: `python -m pytest -q tests` (Qt offscreen: `QT_QPA_PLATFORM=offscreen`). CI: `.github/workflows/file-bridge-ci.yml`.
 - Run: `python -m app.main`
 
-## Before the first NOBAD Files release: fix these (open issues)
+## Before the first NOBAD File Bridge release: fix these (open issues)
 | Issue | Severity | What |
 |---|---|---|
 | [#29](https://github.com/AryanGupta-234/Nobad/issues/29) | high | Remote file names can make downloads write outside the target folder (`file_ops/sftp_ops.py`, `transfers/transfer_manager.py`, `file_ops/ftp_ops.py`). Validate names; always use `safety.safe_destination`. |
@@ -35,6 +35,6 @@ Close an issue in the PR that fixes it (`Fixes #29`), with a test that would hav
 - Every change comes with tests; `python -m pytest -q tests` must pass.
 
 ## How changes land
-Branch → pull request against `main`. A code owner must approve (you can review others' changes to `apps/files/`;
-your own PRs need the maintainer). CI must pass. Releases of NOBAD Files will get their own tag pattern and workflow
+Branch → pull request against `main`. A code owner must approve (you can review others' changes to `apps/file-bridge/`;
+your own PRs need the maintainer). CI must pass. Releases of NOBAD File Bridge will get their own tag pattern and workflow
 when it's ready. Ask the maintainer first; don't add release automation on your own.
