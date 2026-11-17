@@ -1,10 +1,14 @@
 from __future__ import annotations
 
 import asyncio
+import sys
 
 import pytest
 
 from deployment.local_build_runner import LocalBuildRunner
+
+# Build commands run in the platform's shell (sh, or cmd.exe on Windows); these work in both.
+PY = f'"{sys.executable}" -c'
 
 
 @pytest.mark.asyncio
@@ -12,7 +16,7 @@ async def test_local_build_streams_redacted_output(tmp_path) -> None:
     lines: list[str] = []
 
     result = await LocalBuildRunner().run(
-        "printf 'password=hunter2\\nbuild complete\\n'",
+        f'{PY} "print(\'password=hunter2\'); print(\'build complete\')"',
         working_directory=tmp_path,
         on_output=lines.append,
     )
@@ -24,7 +28,7 @@ async def test_local_build_streams_redacted_output(tmp_path) -> None:
 @pytest.mark.asyncio
 async def test_local_build_failure_stops_before_deployment(tmp_path) -> None:
     result = await LocalBuildRunner().run(
-        "printf 'failed\\n'; exit 7",
+        f'{PY} "import sys; print(\'failed\'); sys.exit(7)"',
         working_directory=tmp_path,
     )
 
@@ -37,7 +41,7 @@ async def test_local_build_can_be_cancelled(tmp_path) -> None:
     runner = LocalBuildRunner()
     task = asyncio.create_task(
         runner.run(
-            "sleep 30",
+            f'{PY} "import time; time.sleep(30)"',
             working_directory=tmp_path,
         )
     )

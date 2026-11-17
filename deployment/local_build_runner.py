@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import os
 import signal
+import subprocess
 from collections.abc import Callable
 from pathlib import Path
 
@@ -66,7 +67,9 @@ class LocalBuildRunner:
             if os.name == "posix":
                 os.killpg(process.pid, signal.SIGTERM)
             else:
-                process.terminate()
+                # The build runs under cmd.exe: ending only the shell would leave the build itself running and its
+                # output pipe open, so the runner never finished. taskkill /T ends the whole tree.
+                await _kill_tree_windows(process.pid)
         except ProcessLookupError:
             return
         try:
@@ -80,3 +83,12 @@ class LocalBuildRunner:
             except ProcessLookupError:
                 pass
             await process.wait()
+
+
+async def _kill_tree_windows(pid: int) -> None:
+    killer = await asyncio.create_subprocess_exec(
+        "taskkill", "/T", "/F", "/PID", str(pid),
+        stdout=asyncio.subprocess.DEVNULL, stderr=asyncio.subprocess.DEVNULL,
+        creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+    )
+    await killer.wait()

@@ -8,7 +8,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from core.result import OperationResult
-from file_ops.base import FileItem
+from file_ops.base import FileItem, local_time
 from file_ops.safety import ensure_not_protected, normalize_remote_path
 from sync.diff_engine import SyncAction, SyncManifestEntry, SyncPlanEntry, SyncPreview
 from sync.ignore_rules import should_ignore
@@ -159,7 +159,7 @@ class DeploymentPlanner:
                     SyncManifestEntry(
                         path=relative,
                         size=stat.st_size,
-                        modified_at=datetime.fromtimestamp(stat.st_mtime).astimezone(),
+                        modified_at=local_time(stat.st_mtime),
                     )
                 )
                 visited += 1

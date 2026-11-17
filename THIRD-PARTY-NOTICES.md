@@ -4,7 +4,7 @@ Bundled in this folder:
 
 | Component | Where | License |
 |---|---|---|
-| xterm.js and `@xterm/addon-fit` | `app_web/ui/vendor/xterm/` | MIT |
+| xterm.js (`@xterm/xterm` 5.5.0) and `@xterm/addon-fit` 0.10.0 | `app_web/ui/vendor/xterm/` (its `LICENSE` and `VERSION.txt` are next to it) | MIT |
 | Monaco Editor 0.56.0 (`min/vs` only; translations and type definitions removed) | `resources/editor/vendor/monaco/` (its `LICENSE` and `ThirdPartyNotices.txt` are next to it) | MIT |
 | Tailwind CSS (Play CDN build, design preview only, not shipped in the app) | `preview/tailwind.js` | MIT |
 

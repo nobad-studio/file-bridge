@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 import pytest
@@ -97,4 +98,5 @@ def test_trusting_host_key_replaces_app_entry_atomically(tmp_path: Path) -> None
 
     content = path.read_text(encoding="utf-8")
     assert content == "[example.com]:65002 ssh-ed25519 AAAANEW\n"
-    assert path.stat().st_mode & 0o777 == 0o600
+    if os.name != "nt":                       # Windows has no POSIX modes; its ACLs come from the profile folder
+        assert path.stat().st_mode & 0o777 == 0o600

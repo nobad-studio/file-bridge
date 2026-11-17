@@ -3,12 +3,11 @@ from __future__ import annotations
 import posixpath
 import stat
 import hashlib
-from datetime import datetime
 from pathlib import Path
 from typing import Any, Callable
 
 from core.result import OperationResult, result_from_exception
-from file_ops.base import FileItem, FileKind
+from file_ops.base import FileItem, FileKind, local_time
 from file_ops.safety import (
     DOT_ENTRIES,
     ensure_not_protected,
@@ -227,7 +226,7 @@ class SFTPFileOperations:
             path=path,
             kind=kind,
             size=getattr(attrs, "size", None) if kind == FileKind.FILE else None,
-            modified_at=datetime.fromtimestamp(mtime).astimezone() if mtime else None,
+            modified_at=local_time(mtime) if mtime else None,
             permissions=stat.filemode(mode) if mode else None,
             owner=str(getattr(attrs, "uid", "")) or None,
             group=str(getattr(attrs, "gid", "")) or None,

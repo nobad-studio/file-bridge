@@ -41,6 +41,30 @@ class KdfConfig:
         )
 
 
+# Limits for Argon2 parameters read from a file someone else made (vault imports). A crafted file could otherwise ask
+# for terabytes of memory or hours of work before the password is even checked. The app's own default is 64 MiB.
+KDF_LIMITS = {"time_cost": (1, 10), "memory_cost": (8, 1024 * 1024), "parallelism": (1, 16)}   # memory in KiB: up to 1 GiB
+
+
+def kdf_from_untrusted(value: object) -> KdfConfig:
+    """``KdfConfig.from_dict`` for imported files: refuses parameters outside ``KDF_LIMITS`` (ValueError)."""
+    if not isinstance(value, dict):
+        raise ValueError("The export has no valid key settings.")
+    try:
+        config = KdfConfig.from_dict(value)
+    except (TypeError, ValueError):
+        raise ValueError("The export's key settings aren't numbers.") from None
+    if config.name != "argon2id":
+        raise ValueError(f"Unsupported KDF: {config.name}")
+    for field, (low, high) in KDF_LIMITS.items():
+        number = getattr(config, field)
+        if not low <= number <= high:
+            raise ValueError(f"The export asks for {field.replace('_', ' ')} {number}, outside the safe range {low}-{high}.")
+    if config.hash_len != 32:
+        raise ValueError("The export asks for an unexpected key length.")
+    return config
+
+
 def b64encode(raw: bytes) -> str:
     return base64.b64encode(raw).decode("ascii")
 

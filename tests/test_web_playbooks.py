@@ -243,3 +243,10 @@ def test_custom_snippets_find_their_variables_and_bundled_ones_stay_read_only(ct
 def test_playbooks_need_an_ssh_connection(ctx) -> None:
     reply = api_post("pb.run", {"id": "check-ports"}, ctx)
     assert not reply["ok"] and "Connect" in reply["error"]
+
+
+def test_backslashes_in_a_value_are_kept_as_text() -> None:
+    from core.playbooks_manager import interpolate_template
+
+    script = "grep -E '{{PATTERN}}' /var/log/app.log"
+    assert interpolate_template(script, {"PATTERN": r"\d+ \1 \n"}) == r"grep -E '\d+ \1 \n' /var/log/app.log"

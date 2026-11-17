@@ -486,7 +486,7 @@ def interpolate_template(template: str, variables: dict[str, Any]) -> str:
     for key, val in variables.items():
         str_val = str(val).strip()
         pattern = r"\{\{\s*" + re.escape(key) + r"\s*\}\}"
-        result = re.sub(pattern, str_val, result)
+        result = re.sub(pattern, lambda _m, v=str_val: v, result)      # a value is text, never a replacement template
     return result
 
 

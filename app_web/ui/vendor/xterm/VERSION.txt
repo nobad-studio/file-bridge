@@ -1,0 +1,4 @@
+@xterm/xterm 5.5.0      lib/xterm.js and css/xterm.css from the npm package
+@xterm/addon-fit 0.10.0 lib/addon-fit.js from the npm package
+Identified by SHA-256 against the npm tarballs (line endings normalised): xterm.js 1f991ac3b4b283eb..., addon-fit.js bdaefa370b1bfc42...
+License: MIT, see LICENSE in this folder.

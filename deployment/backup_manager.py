@@ -102,8 +102,9 @@ class BackupManager:
         command = (
             f"if test -d {sh_quote(backup_directory)}; then "
             f"find {sh_quote(backup_directory)} -maxdepth 1 -type f "
-            f"\\( -name '*.tar.gz' -o -name '*.zip' \\) -printf '%T@ %p\\n' "
-            f"| sort -nr | tail -n +{keep + 1} | cut -d' ' -f2- | xargs -r rm --; fi"
+            f"\\( -name '*.tar.gz' -o -name '*.zip' \\) -printf '%T@ %p\\0' "
+            # NUL-separated all the way: a folder or file name with spaces stays one argument to rm (issue #5)
+            f"| sort -z -nr | tail -z -n +{keep + 1} | cut -z -d' ' -f2- | xargs -0 -r rm --; fi"
         )
         return await self._run_checked(connection, command, "Could not prune old deployment backups.")
 
