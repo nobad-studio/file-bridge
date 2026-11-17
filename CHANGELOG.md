@@ -1,5 +1,10 @@
 # NOBAD File Bridge changelog
 
+## 0.5.2
+
+* New app icon: the NOBAD mark with a blue "n", in place of the old green and blue terminal icon. It's used for
+  the app, the installer, the Start menu, the taskbar, the window and the Linux launcher.
+
 ## 0.5.1
 
 * Windows: File Bridge now comes as an installer, `NobadFileBridge-Setup-0.5.1.exe`, in place of the zip. It
