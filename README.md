@@ -1,6 +1,6 @@
 # NOBAD File Bridge
 
-NOBAD File Bridge · part of [NOBAD](https://nobad-platform.nobad-studio.workers.dev/): software with a point of view.
+NOBAD File Bridge · part of [NOBAD](https://nobad-platform.nobad-studio.workers.dev/). Software with a point of view.
 
 **Status:** released. Download the Windows installer or the Linux `.deb` from [Releases](https://github.com/nobad-studio/file-bridge/releases/latest); see the work list in [AGENTS.md](AGENTS.md). Author and code owner: [@harshRaj1601](https://github.com/harshRaj1601). AI assistants: see [AGENTS.md](AGENTS.md).
 
