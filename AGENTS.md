@@ -40,3 +40,10 @@ Close an issue in the PR that fixes it (`Fixes #29`), with a test that would hav
 Branch → pull request against `main`; the `file-bridge-tests` check runs this suite on every PR. The
 `file-bridge` team (@harshRaj1601) maintains this repository; workflows (`.github/`) stay with @AryanGupta-234. Copilot reviews every PR automatically; treat its comments as advice.
 Releases of NOBAD File Bridge will get their own tag pattern and workflow when it's ready: ask the maintainer first.
+
+## Shared memory (all NOBAD repos)
+Decisions, open items and ideas shared by every contributor and AI assistant live in
+[`nobad-studio/memory`](https://github.com/nobad-studio/memory). Read its `INDEX.md` first (one line per fact; Claude
+Code loads it automatically at session start through `.claude/settings.json`), open a fact only when it matters, and
+check who else is working on what with `python tools/mem.py status` there. Record new decisions as a PR to that repo
+(its `AGENTS.md`, or the `nobad-memory` skill), never secrets.
