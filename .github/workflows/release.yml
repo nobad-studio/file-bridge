@@ -104,7 +104,7 @@ jobs:
       - name: Build the app (PyInstaller, pinned) and the .deb
         run: |
           uv run --no-sync --with pyinstaller==6.22.3 pyinstaller --clean --noconfirm build.spec
-          packaging/linux/build-deb.sh "$VER" amd64
+          bash packaging/linux/build-deb.sh "$VER" amd64
       - name: Check the built app (UI files, API, Monaco; no window on the runner)
         run: dist/NobadFileBridge/NobadFileBridge --self-check
       - name: Checksum
