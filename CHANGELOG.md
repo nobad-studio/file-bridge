@@ -1,6 +1,8 @@
 # NOBAD File Bridge changelog
 
-## Unreleased
+## 0.5.0
+
+The first release of NOBAD File Bridge.
 
 * Fixed (Windows): a folder on a server with a file dated just after 1970 couldn't be listed, because the date
   conversion failed. Unknown or out-of-range dates now show as blank.

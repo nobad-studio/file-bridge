@@ -3,7 +3,7 @@ set -euo pipefail
 
 APP_ID="nobad-file-bridge"
 APP_NAME="NOBAD File Bridge"
-VERSION="${1:-0.4.0}"
+VERSION="${1:-$(python3 -c 'import re,pathlib;print(re.search(r"__version__ = \"([^\"]+)\"", pathlib.Path("app/__init__.py").read_text()).group(1))')}"
 ARCH="${2:-amd64}"
 DIST_DIR="dist"
 PYINSTALLER_APP="${DIST_DIR}/NobadFileBridge"
