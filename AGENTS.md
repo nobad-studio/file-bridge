@@ -9,7 +9,7 @@ terminals, an encrypted credential vault, deployments). Python 3.12; the window 
 @harshRaj1601. Part of NOBAD: *software with a point of view*.
 
 ## Commands (from the repository root)
-- Install: `pip install -e ".[dev]"` (CI should move to `uv sync --locked`, see #5)
+- Install: `uv sync --locked --extra dev` (what CI uses; `pip install -e ".[dev]"` also works)
 - Tests: `python -m pytest -q tests` (Qt offscreen: `QT_QPA_PLATFORM=offscreen`). CI: `.github/workflows/tests.yml`.
 - Run: `python -m app.main` (the web UI; see `docs/WEB-UI.md`) · `--browser` opens it in a web browser
 - Package: `uv run --with pyinstaller pyinstaller --clean --noconfirm build.spec` (on the target OS), then
