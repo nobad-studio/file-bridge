@@ -21,14 +21,15 @@ Pick up from the top. Each item says what "done" means. Update this list in the 
 
 | # | Task | Done when |
 |---|---|---|
-| 1 | **Sign the CLA** (a human step for @harshRaj1601): comment `I have read the CLA Document and I hereby sign the CLA` on [PR #1](https://github.com/nobad-studio/file-bridge/pull/1). | The `cla` check on #1 is green. |
-| 2 | **Make the test suite pass** on [PR #2](https://github.com/nobad-studio/file-bridge/pull/2) (web UI stage 3): run `python -m pytest -q tests`, fix the failures in the code (not by deleting or skipping tests). | `file-bridge-tests` is green on #2. |
-| 3 | [#4](https://github.com/nobad-studio/file-bridge/issues/4) (medium) private data folder: data folder 0700, database 0600, no shared `/tmp` fallback. Already implemented in PR #1. | #1 merged (it says `Fixes #4`). |
-| 4 | [#3](https://github.com/nobad-studio/file-bridge/issues/3) (high) Monaco loaded from cdnjs/unpkg without integrity, in a page with a Python bridge: bundle it locally under `resources/editor/`. | No CDN URL left (`git grep -n "cdnjs\|unpkg"` is empty), the editor still loads, test added. |
-| 5 | [#5](https://github.com/nobad-studio/file-bridge/issues/5) (low) green suite plus smaller hardening (quoting, Argon2 limits, auto-lock, export permissions, `xargs -0`); move CI to `uv sync --locked` so dependencies are pinned. | Issue checklist done; CI installs from `uv.lock`. |
+| 1 | ~~Sign the CLA~~ | **Done** 2026-11-17 (signature recorded on the `cla-signatures` branch, which the split had left out). |
+| 2 | ~~Make the test suite pass on PR #2~~ | **Done**: #2 and the rest of the web UI (#8 to #18) merged with `file-bridge-tests` green. |
+| 3 | ~~[#4](https://github.com/nobad-studio/file-bridge/issues/4) private data folder~~ | **Done**: #1 merged. |
+| 4 | ~~[#3](https://github.com/nobad-studio/file-bridge/issues/3) Monaco from a CDN~~ | **Done**: #9 bundles Monaco under `resources/editor/vendor/monaco/`. |
+| 5 | [#5](https://github.com/nobad-studio/file-bridge/issues/5) green suite plus smaller hardening, and CI installs from `uv.lock`. | The hardening PR is merged (suite green on Windows too) and the CI PR (`uv sync --locked`, a workflow change for @AryanGupta-234) is merged. |
+| 6 | **First release.** Needs a release workflow and tag pattern from the maintainer, building the Windows and Linux packages in CI, then a website PR for the File Bridge page. | A CI-built release exists and the website lists it. |
 
 Fixed already: remote names writing outside the download folder (Nobad-VPN #29, PR #34) and the sudo password on a
-server-controlled prompt (Nobad-VPN #32, PR #36). Don't release NOBAD File Bridge before items 3 to 5 are done.
+server-controlled prompt (Nobad-VPN #32, PR #36). Don't release NOBAD File Bridge before item 5 is done.
 Close an issue in the PR that fixes it (`Fixes #3`), with a test that would have caught it.
 
 ## Rules for this project

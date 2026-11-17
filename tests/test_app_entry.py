@@ -42,3 +42,10 @@ def test_the_package_ships_the_web_ui_files() -> None:
     assert pyside and all("sys_platform == 'linux'" in d for d in pyside)        # only the Linux window needs Qt
     spec = Path("build.spec").read_text(encoding="utf-8")
     assert '"app_web/ui"' in spec and 'collect_data_files("webview")' in spec and '"ui",' not in spec
+
+
+def test_the_build_leaves_out_the_design_mock_and_ships_xterm_notices() -> None:
+    spec = Path("build.spec").read_text(encoding="utf-8")
+    assert "preview" not in spec                                   # preview/ is a design mock, never bundled
+    assert Path("app_web/ui/vendor/xterm/LICENSE").read_text(encoding="utf-8").count("Permission is hereby granted") == 1
+    assert "@xterm/xterm 5.5.0" in Path("THIRD-PARTY-NOTICES.md").read_text(encoding="utf-8").replace("` ", " ").replace("`", "")

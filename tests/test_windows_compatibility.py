@@ -15,5 +15,5 @@ def test_local_build_runner_uses_windows_safe_process_controls() -> None:
     source = Path("deployment/local_build_runner.py").read_text(encoding="utf-8")
 
     assert 'start_new_session=os.name == "posix"' in source
-    assert "process.terminate()" in source
+    assert '"taskkill", "/T", "/F"' in source        # cmd.exe and the build it started end together
     assert "process.kill()" in source

@@ -1,6 +1,13 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
 .venv/
+.pytest_cache/
+.ruff_cache/
+# builds
 build/
 dist/
-*.egg-info/
-.pytest_cache/
-app_launch.log
+# local data and screenshots
+*.sqlite3
+*.log

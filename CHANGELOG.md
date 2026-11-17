@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+* Fixed (Windows): a folder on a server with a file dated just after 1970 couldn't be listed, because the date
+  conversion failed. Unknown or out-of-range dates now show as blank.
+* Fixed (Windows): cancelling a deployment's local build left the build running. The whole process tree is
+  stopped now.
+* Fixed: pruning old deployment backups split names on spaces. In a folder like `my site/.rfm-backups` it could
+  fail, or remove the wrong file. Names are kept whole now.
+* Fixed: a backslash in a playbook value (in a regex, for example) was read as an escape when the script was built.
+* Security: importing a vault export no longer accepts Argon2 settings that would take huge memory or time before
+  the password is even checked.
+* xterm.js 5.5.0 and its fit addon are listed with their versions and MIT licence.
 * The classic Qt window is removed. File Bridge's window has every screen it had, and more. Your saved servers,
   sync jobs, deployments, the credential vault and settings are kept, because both windows used the same database.
   `--classic` now says it was removed.

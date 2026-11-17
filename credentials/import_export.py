@@ -14,6 +14,7 @@ from credentials.crypto import (
     decrypt_json,
     derive_key,
     encrypt_json,
+    kdf_from_untrusted,
     new_salt,
 )
 from credentials.env_parser import EnvEntry, format_env, parse_env
@@ -225,7 +226,7 @@ class CredentialImportExportService:
             bundle = json.loads(data)
             if bundle.get("format") != "rfm-vault":
                 return OperationResult.failure("Unsupported credential vault export format.")
-            config = KdfConfig.from_dict(bundle.get("kdf"))
+            config = kdf_from_untrusted(bundle.get("kdf"))          # a crafted file can't exhaust memory
             key = derive_key(export_password, b64decode(str(bundle["salt"])), config)
             payload_result = decrypt_json(key, str(bundle["payload"]), aad="rfm-vault-export")
         except (KeyError, json.JSONDecodeError, ValueError) as exc:

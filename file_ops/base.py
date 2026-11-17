@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import StrEnum
 
 
@@ -47,3 +47,17 @@ def human_size(size: int | None) -> str:
         value /= 1024
     return f"{size} B"
 
+
+def local_time(timestamp: float | int | None) -> datetime | None:
+    """A file time as an aware local datetime, or None when there is none or it can't be shown.
+
+    ``datetime.fromtimestamp(ts).astimezone()`` converts a naive time through ``mktime``; east of UTC a time just after
+    1970 becomes negative there, which Windows rejects (``OSError: [Errno 22]``) and one such file made a whole server
+    listing fail. Starting from an aware UTC time avoids ``mktime``; times outside what the platform can show (before
+    1970 on Windows, far future) are reported as unknown instead of failing."""
+    if timestamp is None:
+        return None
+    try:
+        return datetime.fromtimestamp(float(timestamp), timezone.utc).astimezone()
+    except (OverflowError, OSError, ValueError):
+        return None
