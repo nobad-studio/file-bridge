@@ -20,8 +20,10 @@ def app_version() -> str:
         from importlib.metadata import version
 
         return version("nobad-file-bridge")
-    except Exception:
-        return "0.4.0"
+    except Exception:                          # the packaged app has no installed metadata
+        from app import __version__
+
+        return __version__
 
 
 @dataclass
