@@ -214,3 +214,29 @@ def test_a_page_that_leaves_before_its_reply_is_not_an_error(server, capfd) -> N
     err = capfd.readouterr().err
     assert "Traceback" not in err and "ConnectionAbortedError" not in err and "ConnectionResetError" not in err
     assert not any("Internal error" in str(e) for e in bus.recent_log())
+
+
+def test_a_burst_of_page_requests_is_never_refused(server) -> None:
+    """A page load opens a connection per file at once; none may be refused (the default listen backlog was 5)."""
+    import threading
+
+    cookie = sign_in(server)
+    statuses: list[int] = []
+    lock = threading.Lock()
+
+    def fetch() -> None:
+        try:
+            res, _ = request(server, "GET", "/static/core.js", cookie=cookie)
+            code = res.status
+        except OSError:
+            code = 0
+        with lock:
+            statuses.append(code)
+
+    threads = [threading.Thread(target=fetch) for _ in range(60)]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join(15)
+    assert BridgeServer.request_queue_size >= 64
+    assert statuses.count(200) == 60, statuses
