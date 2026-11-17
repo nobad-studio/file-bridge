@@ -1,14 +1,14 @@
 # NOBAD File Bridge
 
-NOBAD File Bridge · part of [NOBAD](../../README.md): software with a point of view.
+NOBAD File Bridge · part of [NOBAD](https://nobad-platform.nobad-studio.workers.dev/): software with a point of view.
 
-**Status:** in development, not released yet. Issues [#29](https://github.com/AryanGupta-234/Nobad/issues/29) to [#33](https://github.com/AryanGupta-234/Nobad/issues/33) must be fixed before the first release. Author and code owner: [@harshRaj1601](https://github.com/harshRaj1601). AI assistants: see [AGENTS.md](AGENTS.md).
+**Status:** in development, not released yet. Issues [#29](https://github.com/nobad-studio/Nobad-VPN/issues/29) to [#33](https://github.com/nobad-studio/Nobad-VPN/issues/33) must be fixed before the first release. Author and code owner: [@harshRaj1601](https://github.com/harshRaj1601). AI assistants: see [AGENTS.md](AGENTS.md).
 
 Open, copy, edit and back up the files on your website or server, right from your PC. NOBAD File Bridge
 (formerly *NOBAD Files*) is a cross-platform desktop app and part of the NOBAD platform. It's built with Python 3.12
 and PySide6.
 
-All commands below are run from `apps/file-bridge/`.
+All commands below are run from the repository root.
 
 Phase 4A/4B/4C MVP for a cross-platform Python desktop application: a PySide6 file manager with SSH/SFTP and FTP/FTPS browsing, queued transfers, cross-server relay, baseline-aware sync, visual text diffs, remote editing, terminals, structured logs, secure credential references, password-protected credential vaults, and release-aware deployment workflows.
 

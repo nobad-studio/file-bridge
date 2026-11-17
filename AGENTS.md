@@ -1,26 +1,27 @@
 # NOBAD File Bridge: instructions for AI coding assistants
 
-This file applies to everything under `apps/file-bridge/`. The repository-wide rules are in [`/AGENTS.md`](../../AGENTS.md)
-(read it too); project memory is in [`/docs/ai/memory.md`](../../docs/ai/memory.md).
+This is the repository `nobad-studio/file-bridge` (split from `nobad-studio/Nobad-VPN` with its full history on
+2026-11-17). NOBAD-wide rules and project memory live in [`nobad-studio/Nobad-VPN`](https://github.com/nobad-studio/Nobad-VPN)
+(`AGENTS.md`, `docs/ai/memory.md`); read them too.
 
 NOBAD File Bridge is a desktop file manager for remote servers (SSH/SFTP, FTP/FTPS, transfers, sync, remote editing,
 terminals, an encrypted credential vault, deployments). Python 3.12 + PySide6. Author and code owner:
 @harshRaj1601. Part of NOBAD: *software with a point of view*.
 
-## Commands (from `apps/file-bridge`)
+## Commands (from the repository root)
 - Install: `pip install -e ".[dev]"` (CI should move to `uv sync --locked`, see #33)
-- Tests: `python -m pytest -q tests` (Qt offscreen: `QT_QPA_PLATFORM=offscreen`). CI: `.github/workflows/file-bridge-ci.yml`.
+- Tests: `python -m pytest -q tests` (Qt offscreen: `QT_QPA_PLATFORM=offscreen`). CI: `.github/workflows/tests.yml`.
 - Run: `python -m app.main` (classic Qt UI) · `python -m app.web` (new web UI, in development; see `docs/WEB-UI.md`)
 - Web UI screenshots (temporary database, never commit them): `python -I scripts/ui_screenshots.py <folder> [screen ...]`
 
 ## Before the first NOBAD File Bridge release: fix these (open issues)
 | Issue | Severity | What |
 |---|---|---|
-| [#29](https://github.com/AryanGupta-234/Nobad/issues/29) | high | Remote file names can make downloads write outside the target folder (`file_ops/sftp_ops.py`, `transfers/transfer_manager.py`, `file_ops/ftp_ops.py`). Validate names; always use `safety.safe_destination`. |
-| [#30](https://github.com/AryanGupta-234/Nobad/issues/30) | high | Monaco loaded from cdnjs/unpkg without integrity, in a page with a Python bridge. Bundle it locally. |
-| [#31](https://github.com/AryanGupta-234/Nobad/issues/31) | medium | Data folder 0700, database 0600; no shared `/tmp` fallback. |
-| [#32](https://github.com/AryanGupta-234/Nobad/issues/32) | medium | Don't auto-type the sudo password on server-controlled output (`sudo -S -p <nonce>`). |
-| [#33](https://github.com/AryanGupta-234/Nobad/issues/33) | low | Green test suite plus smaller hardening (quoting, Argon2 limits, auto-lock, export permissions, `xargs -0`). |
+| [#29](https://github.com/nobad-studio/Nobad-VPN/issues/29) | high | Remote file names can make downloads write outside the target folder (`file_ops/sftp_ops.py`, `transfers/transfer_manager.py`, `file_ops/ftp_ops.py`). Validate names; always use `safety.safe_destination`. |
+| [#30](https://github.com/nobad-studio/Nobad-VPN/issues/30) | high | Monaco loaded from cdnjs/unpkg without integrity, in a page with a Python bridge. Bundle it locally. |
+| [#31](https://github.com/nobad-studio/Nobad-VPN/issues/31) | medium | Data folder 0700, database 0600; no shared `/tmp` fallback. |
+| [#32](https://github.com/nobad-studio/Nobad-VPN/issues/32) | medium | Don't auto-type the sudo password on server-controlled output (`sudo -S -p <nonce>`). |
+| [#33](https://github.com/nobad-studio/Nobad-VPN/issues/33) | low | Green test suite plus smaller hardening (quoting, Argon2 limits, auto-lock, export permissions, `xargs -0`). |
 
 Close an issue in the PR that fixes it (`Fixes #29`), with a test that would have caught it.
 
@@ -36,8 +37,6 @@ Close an issue in the PR that fixes it (`Fixes #29`), with a test that would hav
 - Every change comes with tests; `python -m pytest -q tests` must pass.
 
 ## How changes land
-Branch → pull request against `main`. A PR that changes **only** `apps/file-bridge/` needs no approval: it merges
-once the required checks pass (`file-bridge-tests` runs this suite, plus `site-build`). Turn on auto-merge on the PR
-and it merges by itself when they're green. A PR that also touches anything else (VPN, website, workflows, rules,
-AGENTS.md) needs the maintainer's approval. Copilot reviews every PR automatically; treat its comments as advice.
+Branch → pull request against `main`; the `file-bridge-tests` check runs this suite on every PR. The
+`file-bridge` team (@harshRaj1601) maintains this repository; workflows (`.github/`) stay with @AryanGupta-234. Copilot reviews every PR automatically; treat its comments as advice.
 Releases of NOBAD File Bridge will get their own tag pattern and workflow when it's ready: ask the maintainer first.
