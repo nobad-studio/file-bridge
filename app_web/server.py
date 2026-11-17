@@ -252,6 +252,10 @@ class Handler(BaseHTTPRequestHandler):
 
 class BridgeServer(ThreadingHTTPServer):
     daemon_threads = True
+    # A page load opens ~25 connections at once (one per file; HTTP/1.0 closes each). The default listen backlog of
+    # 5 overflowed when the server was busy (live logs, transfers), and Windows refused the extra connections: a
+    # random script then failed to load after a reload.
+    request_queue_size = 128
 
     def handle_error(self, request: Any, client_address: Any) -> None:
         """Stay quiet when the page simply went away; anything else is still printed (the default)."""
