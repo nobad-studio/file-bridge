@@ -139,22 +139,22 @@ pyinstaller --clean --noconfirm build.spec
 Build the Windows installer from that app folder ([Inno Setup 6](https://jrsoftware.org/isinfo.php)):
 
 ```powershell
-iscc /DMyAppVersion=0.5.1 packaging\windows\installer.iss   # -> dist-installer\NobadFileBridge-Setup-0.5.1.exe
+iscc /DMyAppVersion=0.5.2 packaging\windows\installer.iss   # -> dist-installer\NobadFileBridge-Setup-0.5.2.exe
 ```
 
 Build a basic Linux `.deb` from that app folder:
 
 ```bash
-packaging/linux/build-deb.sh 0.5.1 amd64
-sudo apt install ./dist/nobad-file-bridge_0.5.1_amd64.deb
+packaging/linux/build-deb.sh 0.5.2 amd64
+sudo apt install ./dist/nobad-file-bridge_0.5.2_amd64.deb
 nobad-file-bridge
 ```
 
 If apt prints `Download is performed unsandboxed as root ... couldn't be accessed by user '_apt'`, the package can still install successfully. It means the local `.deb` lives in a directory the `_apt` sandbox user cannot traverse. To avoid that notice, copy the package to `/tmp` first:
 
 ```bash
-cp ./dist/nobad-file-bridge_0.5.1_amd64.deb /tmp/
-sudo apt install /tmp/nobad-file-bridge_0.5.1_amd64.deb
+cp ./dist/nobad-file-bridge_0.5.2_amd64.deb /tmp/
+sudo apt install /tmp/nobad-file-bridge_0.5.2_amd64.deb
 ```
 
 The Linux package installs a launcher at `/usr/bin/nobad-file-bridge`. If the app aborts on another PC, run it once with Qt plugin diagnostics:
@@ -176,4 +176,4 @@ pyinstaller --clean --noconfirm build.spec
 .\dist\NobadFileBridge\NobadFileBridge.exe
 ```
 
-The spec includes the bundled terminal assets, branding images, credential-vault modules, FTP/FTPS, sync, deployment, terminal, and `resources/branding/remote-file-manager.ico` for the executable icon. Ignore Inno Setup for now; the Windows output is the app folder plus `.exe` under `dist\NobadFileBridge`.
+The spec includes the bundled terminal assets, branding images, credential-vault modules, FTP/FTPS, sync, deployment, terminal, and `resources/branding/nobad-file-bridge.ico` (the NOBAD mark with a blue "n") for the executable, installer and window icon. The Windows output is the app folder plus `.exe` under `dist\NobadFileBridge`; `packaging\windows\installer.iss` turns it into the installer.

@@ -50,7 +50,7 @@ exec "${APP_DIR}/NobadFileBridge" "$@"
 LAUNCHER
 chmod 0755 "${BIN_DIR}/nobad-file-bridge"
 install -m 0644 "packaging/linux/nobad-file-bridge.desktop" "${DESKTOP_DIR}/nobad-file-bridge.desktop"
-install -m 0644 "resources/branding/remote-file-manager-256.png" "${ICON_DIR}/nobad-file-bridge.png"
+install -m 0644 "resources/branding/nobad-file-bridge-256.png" "${ICON_DIR}/nobad-file-bridge.png"
 INSTALLED_SIZE_KIB="$(du -sk "${PACKAGE_ROOT}" | cut -f1)"
 
 cat > "${DEBIAN_DIR}/control" <<CONTROL

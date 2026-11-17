@@ -20,6 +20,7 @@ import sys
 import threading
 import time
 from collections.abc import Callable
+from pathlib import Path
 from typing import Any
 
 WINDOW_TITLE = "NOBAD File Bridge"
@@ -27,6 +28,14 @@ DEFAULT_SIZE = (1280, 820)
 MIN_W, MIN_H = 1060, 700
 BACKGROUND = "#08090d"
 GEOMETRY_ROW = "web_ui.window"
+# Shipped in resources/ (PyInstaller copies it next to app_web/). Windows takes the .ico, GTK/Qt the .png.
+BRANDING = Path(__file__).resolve().parents[1] / "resources" / "branding"
+
+
+def window_icon() -> str | None:
+    path = BRANDING / ("nobad-file-bridge.ico" if _WINDOWS else "nobad-file-bridge-256.png")
+    return str(path) if path.is_file() else None
+
 
 WEBVIEW2_MISSING = (
     "NOBAD File Bridge needs Microsoft Edge WebView2 to show its window. Install the WebView2 Runtime from "
@@ -218,7 +227,7 @@ class WindowController:
         gui = "edgechromium" if sys.platform == "win32" else linux_gui() if sys.platform.startswith("linux") else None
         started = None if self.frameless else dark_system_titlebar
         try:
-            webview.start(started, gui=gui, debug=debug, private_mode=True)
+            webview.start(started, gui=gui, debug=debug, private_mode=True, icon=window_icon())
         except Exception as exc:
             if sys.platform == "win32":
                 raise WindowUnavailable(WEBVIEW2_MISSING) from exc

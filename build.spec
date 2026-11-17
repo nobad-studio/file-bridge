@@ -26,7 +26,7 @@ from PyInstaller.utils.hooks import collect_data_files, collect_submodules, copy
 ROOT = Path(globals().get("SPECPATH", ".")).resolve()
 APP_NAME = "NobadFileBridge"
 RESOURCES_DIR = ROOT / "resources"
-APP_ICON = RESOURCES_DIR / "branding" / "remote-file-manager.ico"
+APP_ICON = RESOURCES_DIR / "branding" / "nobad-file-bridge.ico"
 
 
 def safe_collect_submodules(package: str) -> list[str]:

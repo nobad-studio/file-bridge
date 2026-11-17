@@ -51,5 +51,5 @@ def test_windows_release_is_an_installer() -> None:
     assert "MB_DEFBUTTON2" in iss                                            # deleting your data defaults to No
     assert "{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}" in iss                   # the WebView2 runtime check
     # Every file the script reads (paths are relative to packaging/windows) exists in the repository.
-    for rel in ("resources/branding/remote-file-manager.ico", "LICENSE", "THIRD-PARTY-NOTICES.md"):
+    for rel in ("resources/branding/nobad-file-bridge.ico", "LICENSE", "THIRD-PARTY-NOTICES.md"):
         assert "..\\..\\" + rel.replace("/", "\\") in iss and Path(rel).exists(), rel
