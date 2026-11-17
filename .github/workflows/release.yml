@@ -1,6 +1,6 @@
 name: NOBAD File Bridge release
 
-# Builds NOBAD File Bridge from a version tag on clean GitHub-hosted runners (Windows: the PyInstaller app as a zip;
+# Builds NOBAD File Bridge from a version tag on clean GitHub-hosted runners (Windows: an Inno Setup installer;
 # Linux: the .deb) and publishes a GitHub Release with both, their SHA-256 files and a signed build-provenance
 # attestation. Same shape as NOBAD VPN's release workflow.
 #   Release:  git tag v0.5.0 && git push origin v0.5.0      (the tag must match app/__init__.py and CHANGELOG.md)
@@ -67,15 +67,34 @@ jobs:
         run: |
           $p = Start-Process -FilePath dist\NobadFileBridge\NobadFileBridge.exe -ArgumentList "--self-check" -PassThru -Wait -NoNewWindow
           if ($p.ExitCode -ne 0) { throw "The packaged app failed its self-check (exit $($p.ExitCode))" }
-      - name: Zip and checksum
+      - name: Install Inno Setup (pinned, as for NOBAD VPN)
+        run: choco install innosetup --version 6.7.1 --no-progress -y
+      - name: Build the installer
+        run: |
+          & "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe" /Qp "/DMyAppVersion=$env:VER" packaging\windows\installer.iss
+          if ($LASTEXITCODE -ne 0) { throw "ISCC failed (exit $LASTEXITCODE)" }
+      - name: Install it silently, check the installed app, uninstall it
+        run: |
+          $setup = "dist-installer\NobadFileBridge-Setup-$env:VER.exe"
+          $dir = Join-Path $env:RUNNER_TEMP "fb-install"
+          $p = Start-Process $setup -ArgumentList "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/CURRENTUSER", "/DIR=`"$dir`"" -PassThru -Wait
+          if ($p.ExitCode -ne 0) { throw "Setup failed (exit $($p.ExitCode))" }
+          $p = Start-Process -FilePath "$dir\NobadFileBridge.exe" -ArgumentList "--self-check" -PassThru -Wait -NoNewWindow
+          if ($p.ExitCode -ne 0) { throw "The installed app failed its self-check (exit $($p.ExitCode))" }
+          $p = Start-Process "$dir\unins000.exe" -ArgumentList "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART" -PassThru -Wait
+          if ($p.ExitCode -ne 0) { throw "Uninstall failed (exit $($p.ExitCode))" }
+          # The uninstaller hands over to a copy of itself in %TEMP% and returns at once: wait for it to finish.
+          for ($i = 0; ($i -lt 60) -and (Test-Path "$dir\NobadFileBridge.exe"); $i++) { Start-Sleep -Seconds 1 }
+          if (Test-Path "$dir\NobadFileBridge.exe") { throw "Uninstall left the app behind" }
+      - name: Checksum
         run: |
           New-Item -ItemType Directory -Force out | Out-Null
-          $zip = "out\NobadFileBridge-$env:VER-windows-x64.zip"
-          Compress-Archive -Path dist\NobadFileBridge -DestinationPath $zip
-          $h = (Get-FileHash $zip -Algorithm SHA256).Hash.ToLower()
+          $name = "NobadFileBridge-Setup-$env:VER.exe"
+          Copy-Item "dist-installer\$name" "out\$name"
+          $h = (Get-FileHash "out\$name" -Algorithm SHA256).Hash.ToLower()
           # LF line ending and no BOM, so `sha256sum -c` accepts the file on Linux too.
-          $sum = Join-Path (Resolve-Path out).Path "$(Split-Path $zip -Leaf).sha256"
-          [IO.File]::WriteAllText($sum, "$h  $(Split-Path $zip -Leaf)`n", [Text.UTF8Encoding]::new($false))
+          $sum = Join-Path (Resolve-Path out).Path "$name.sha256"
+          [IO.File]::WriteAllText($sum, "$h  $name`n", [Text.UTF8Encoding]::new($false))
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: nobad-file-bridge-windows
@@ -145,7 +164,7 @@ jobs:
         uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
         with:
           subject-path: |
-            dist/*.zip
+            dist/*.exe
             dist/*.deb
       - name: Publish the GitHub Release
         env:

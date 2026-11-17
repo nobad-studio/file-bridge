@@ -29,7 +29,7 @@ def test_release_workflow_publishes_only_from_tags_with_pinned_tools() -> None:
     assert "permissions:\n  contents: read" in text                         # read-only by default
     assert text.count("contents: write") == 1                               # only the publish job writes
     assert "pyinstaller==6.22.3" in text and "uv sync --locked" in text
-    assert text.count("--self-check") == 2                                  # both packaged apps are checked
+    assert text.count("--self-check") == 3                  # both packaged apps, and the app the installer installed
     assert all(re.search(r"@[0-9a-f]{40}", line) for line in text.splitlines() if "uses:" in line)
 
 
@@ -37,4 +37,19 @@ def test_windows_checksum_file_uses_lf() -> None:
     # Out-File writes CRLF, which `sha256sum -c` rejects; the checksum file is written with "`n" and no BOM.
     text = Path(".github/workflows/release.yml").read_text(encoding="utf-8")
     assert "Out-File" not in text
-    assert "[IO.File]::WriteAllText($sum, \"$h  $(Split-Path $zip -Leaf)`n\", [Text.UTF8Encoding]::new($false))" in text
+    assert "[IO.File]::WriteAllText($sum, \"$h  $name`n\", [Text.UTF8Encoding]::new($false))" in text
+
+
+def test_windows_release_is_an_installer() -> None:
+    text = Path(".github/workflows/release.yml").read_text(encoding="utf-8")
+    assert "choco install innosetup --version 6.7.1" in text                 # pinned, like NOBAD VPN's
+    assert "packaging\\windows\\installer.iss" in text and "Compress-Archive" not in text
+    assert "dist/*.exe" in text                                              # the installer is attested
+    iss = Path("packaging/windows/installer.iss").read_text(encoding="utf-8")
+    assert "OutputBaseFilename=NobadFileBridge-Setup-{#MyAppVersion}" in iss
+    assert "PrivilegesRequired=lowest" in iss                                # no admin prompt by default
+    assert "MB_DEFBUTTON2" in iss                                            # deleting your data defaults to No
+    assert "{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}" in iss                   # the WebView2 runtime check
+    # Every file the script reads (paths are relative to packaging/windows) exists in the repository.
+    for rel in ("resources/branding/remote-file-manager.ico", "LICENSE", "THIRD-PARTY-NOTICES.md"):
+        assert "..\\..\\" + rel.replace("/", "\\") in iss and Path(rel).exists(), rel

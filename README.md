@@ -2,7 +2,7 @@
 
 NOBAD File Bridge · part of [NOBAD](https://nobad-platform.nobad-studio.workers.dev/): software with a point of view.
 
-**Status:** in development, not released yet. The last item before the first release is [#5](https://github.com/nobad-studio/file-bridge/issues/5); see the work list in [AGENTS.md](AGENTS.md). Author and code owner: [@harshRaj1601](https://github.com/harshRaj1601). AI assistants: see [AGENTS.md](AGENTS.md).
+**Status:** released. Download the Windows installer or the Linux `.deb` from [Releases](https://github.com/nobad-studio/file-bridge/releases/latest); see the work list in [AGENTS.md](AGENTS.md). Author and code owner: [@harshRaj1601](https://github.com/harshRaj1601). AI assistants: see [AGENTS.md](AGENTS.md).
 
 Open, copy, edit and back up the files on your website or server, right from your PC. NOBAD File Bridge
 (formerly *NOBAD Files*) is a cross-platform desktop app and part of the NOBAD platform. It's built with Python 3.12;
@@ -53,6 +53,14 @@ Deferred to later phases:
 - Multi-server deployment orchestration, package installers, public URL mapping, and public plugins.
 
 ## Install
+
+**Windows 10 / 11:** run `NobadFileBridge-Setup-<version>.exe` from [Releases](https://github.com/nobad-studio/file-bridge/releases/latest). It installs for your user without an admin prompt ("Install for all users" is offered too), adds a Start menu entry and an uninstaller in Settings > Apps. File Bridge needs Microsoft Edge WebView2, which Windows 11 has; Setup tells you if it's missing. The installer isn't code-signed yet, so SmartScreen may warn: check the SHA-256 first (`Get-FileHash <file>`).
+
+**Ubuntu 22.04+ / Debian 12+:** `sudo apt install ./nobad-file-bridge_<version>_amd64.deb`.
+
+Uninstalling keeps your data in `~/.remote-file-manager` unless you choose to delete it.
+
+From source:
 
 ```bash
 python3.12 -m venv .venv
@@ -110,7 +118,7 @@ Most web UI tests run against real AsyncSSH servers started on 127.0.0.1. `QT_QP
 
 ## Package
 
-PyInstaller builds should be created on the target OS: build Linux packages on Linux, and build the Windows `.exe` on Windows.
+PyInstaller builds should be created on the target OS: build Linux packages on Linux, and build the Windows `.exe` on Windows. Releases are built by `.github/workflows/release.yml` from a `v*` tag.
 
 Install the app and packaging dependency in the same virtualenv:
 
@@ -128,19 +136,25 @@ pyinstaller --clean --noconfirm build.spec
 ./dist/NobadFileBridge/NobadFileBridge
 ```
 
+Build the Windows installer from that app folder ([Inno Setup 6](https://jrsoftware.org/isinfo.php)):
+
+```powershell
+iscc /DMyAppVersion=0.5.1 packaging\windows\installer.iss   # -> dist-installer\NobadFileBridge-Setup-0.5.1.exe
+```
+
 Build a basic Linux `.deb` from that app folder:
 
 ```bash
-packaging/linux/build-deb.sh 0.4.0 amd64
-sudo apt install ./dist/nobad-file-bridge_0.4.0_amd64.deb
+packaging/linux/build-deb.sh 0.5.1 amd64
+sudo apt install ./dist/nobad-file-bridge_0.5.1_amd64.deb
 nobad-file-bridge
 ```
 
 If apt prints `Download is performed unsandboxed as root ... couldn't be accessed by user '_apt'`, the package can still install successfully. It means the local `.deb` lives in a directory the `_apt` sandbox user cannot traverse. To avoid that notice, copy the package to `/tmp` first:
 
 ```bash
-cp ./dist/nobad-file-bridge_0.4.0_amd64.deb /tmp/
-sudo apt install /tmp/nobad-file-bridge_0.4.0_amd64.deb
+cp ./dist/nobad-file-bridge_0.5.1_amd64.deb /tmp/
+sudo apt install /tmp/nobad-file-bridge_0.5.1_amd64.deb
 ```
 
 The Linux package installs a launcher at `/usr/bin/nobad-file-bridge`. If the app aborts on another PC, run it once with Qt plugin diagnostics:

@@ -8,6 +8,7 @@ __pycache__/
 # builds
 build/
 dist/
+dist-installer/
 # local data and screenshots
 *.sqlite3
 *.log
