@@ -1,5 +1,13 @@
 # NOBAD File Bridge changelog
 
+## 0.5.1
+
+* Windows: File Bridge now comes as an installer, `NobadFileBridge-Setup-0.5.1.exe`, in place of the zip. It
+  installs for your user without an admin prompt (or for all users), adds a Start menu entry, an optional desktop
+  shortcut and an uninstaller, closes a running copy before an upgrade, and tells you if Edge WebView2 is missing.
+  Uninstalling asks before deleting your data and vault; the default is to keep them.
+* Release: the Windows `.sha256` file has an LF line ending, so `sha256sum -c` accepts it.
+
 ## 0.5.0
 
 The first release of NOBAD File Bridge.
