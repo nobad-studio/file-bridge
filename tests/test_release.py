@@ -31,3 +31,10 @@ def test_release_workflow_publishes_only_from_tags_with_pinned_tools() -> None:
     assert "pyinstaller==6.22.3" in text and "uv sync --locked" in text
     assert text.count("--self-check") == 2                                  # both packaged apps are checked
     assert all(re.search(r"@[0-9a-f]{40}", line) for line in text.splitlines() if "uses:" in line)
+
+
+def test_windows_checksum_file_uses_lf() -> None:
+    # Out-File writes CRLF, which `sha256sum -c` rejects; the checksum file is written with "`n" and no BOM.
+    text = Path(".github/workflows/release.yml").read_text(encoding="utf-8")
+    assert "Out-File" not in text
+    assert "[IO.File]::WriteAllText($sum, \"$h  $(Split-Path $zip -Leaf)`n\", [Text.UTF8Encoding]::new($false))" in text

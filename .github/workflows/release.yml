@@ -73,7 +73,9 @@ jobs:
           $zip = "out\NobadFileBridge-$env:VER-windows-x64.zip"
           Compress-Archive -Path dist\NobadFileBridge -DestinationPath $zip
           $h = (Get-FileHash $zip -Algorithm SHA256).Hash.ToLower()
-          "$h  $(Split-Path $zip -Leaf)" | Out-File -Encoding ascii "$zip.sha256"
+          # LF line ending and no BOM, so `sha256sum -c` accepts the file on Linux too.
+          $sum = Join-Path (Resolve-Path out).Path "$(Split-Path $zip -Leaf).sha256"
+          [IO.File]::WriteAllText($sum, "$h  $(Split-Path $zip -Leaf)`n", [Text.UTF8Encoding]::new($false))
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: nobad-file-bridge-windows
